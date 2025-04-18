@@ -1,7 +1,7 @@
 # chess
 ![Archived](https://img.shields.io/badge/status-archived-lightgrey)
-[![Build and Test](https://github.com/notnil/chess/actions/workflows/build-and-test.yaml/badge.svg)](https://github.com/notnil/chess/actions/workflows/build-and-test.yaml)
-[![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/notnil/chess)
+[![Build and Test](https://github.com/0x5844/chess/actions/workflows/build-and-test.yaml/badge.svg)](https://github.com/0x5844/chess/actions/workflows/build-and-test.yaml)
+[![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/0x5844/chess)
 [![Coverage Status](https://coveralls.io/repos/notnil/chess/badge.svg?branch=master&service=github)](https://coveralls.io/github/notnil/chess?branch=master)
 [![Go Report Card](https://goreportcard.com/badge/notnil/chess)](https://goreportcard.com/report/notnil/chess)
 [![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/notnil/chess/master/LICENSE)
@@ -35,7 +35,7 @@ We recommend that all users follow the new repository for ongoing development an
 **chess** can be installed using "go get".
 
 ```bash
-go get -u github.com/notnil/chess
+go get -u github.com/0x5844/chess
 ``` 
 
 ## Usage
@@ -49,7 +49,7 @@ import (
 	"fmt"
 	"math/rand"
 
-	"github.com/notnil/chess"
+	"github.com/0x5844/chess"
 )
 
 func main() {
@@ -93,8 +93,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/notnil/chess"
-	"github.com/notnil/chess/uci"
+	"github.com/0x5844/chess"
+	"github.com/0x5844/chess/uci"
 )
 
 func main() {
@@ -466,7 +466,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/notnil/chess"
+	"github.com/0x5844/chess"
 )
 
 func main() {

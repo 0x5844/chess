@@ -1,4 +1,4 @@
-[Event "Test Nested Variations for https://github.com/notnil/chess: Smith-Morra Accepted; Paulsen Formation"]
+[Event "Test Nested Variations for https://github.com/0x5844/chess: Smith-Morra Accepted; Paulsen Formation"]
 [Site "https://lichess.org/study/lOO87pCX/BZELlaSA"]
 [Result "*"]
 [UTCDate "2023.05.26"]
@@ -11,7 +11,7 @@
 1. e4 c5 2. d4 cxd4 3. c3 dxc3 4. Nxc3 Nc6 5. Nf3 e6 6. Bc4 a6 7. O-O b5 { move comment with with braces  ?  } 8. Bb3 *
 
 
-[Event "Test Nested Variations for https://github.com/notnil/chess: Smith-Morra Declined; Alapin Formation"]
+[Event "Test Nested Variations for https://github.com/0x5844/chess: Smith-Morra Declined; Alapin Formation"]
 [Site "https://lichess.org/study/lOO87pCX/fC2Vw8Fz"]
 [Result "*"]
 [UTCDate "2023.05.26"]
@@ -24,7 +24,7 @@
 1. e4 c5 2. d4 cxd4 3. c3 Nf6 4. e5 Nd5 5. Nf3 Nc6 6. cxd4 d6 { chapter 2 main line move comment with parens ( test ) } 7. Bc4 Nb6 (7... dxe5 { chapter 2 variation move comment with unmatched paren ( } 8. dxe5) 8. Bb5 *
 
 
-[Event "Test Nested Variations for https://github.com/notnil/chess: Smith-Morra Declined; Push Variation"]
+[Event "Test Nested Variations for https://github.com/0x5844/chess: Smith-Morra Declined; Push Variation"]
 [Site "https://lichess.org/study/lOO87pCX/XaAI645Y"]
 [Result "*"]
 [UTCDate "2023.05.26"]

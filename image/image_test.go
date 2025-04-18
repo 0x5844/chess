@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/notnil/chess"
-	"github.com/notnil/chess/image"
+	"github.com/0x5844/chess"
+	"github.com/0x5844/chess/image"
 )
 
 const expectedMD5 = "625c63ef80796a3485004952a18c9b25"
