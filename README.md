@@ -1,6 +1,7 @@
 # chess
 
 [![Build and Test](https://github.com/0x5844/chess/actions/workflows/build-and-test.yaml/badge.svg)](https://github.com/0x5844/chess/actions/workflows/build-and-test.yaml)
+![Go version](https://img.shields.io/github/go-mod/go-version/0x5844/chess?color=cyan)
 [![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/0x5844/chess)
 [![Go Report Card](https://goreportcard.com/badge/0x5844/chess)](https://goreportcard.com/report/0x5844/chess)
 [![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/0x5844/chess/refs/heads/master/LICENSE)
