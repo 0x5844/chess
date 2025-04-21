@@ -8,10 +8,12 @@ jobs:
 
       - uses: actions/setup-go@v2
         with:
-          go-version: 1.17
-      - run: wget https://github.com/official-stockfish/Stockfish/releases/latest/download/stockfish-ubuntu-x86-64-avx2.tar.xz
-      - run: tar -xJf stockfish-ubuntu-x86-64-avx2.tar.xz
-      - run: chmod +x stockfish-ubuntu-x86-64-avx2
-      - run: ln -s stockfish-ubuntu-x86-64-avx2 stockfish
+          go-version: 1.24
+      - run: wget https://github.com/official-stockfish/Stockfish/releases/latest/download/stockfish-ubuntu-x86-64-avx2.tar
+      - run: tar -xvf stockfish-ubuntu-x86-64-avx2.tar
+      - run: chmod u+x stockfish-ubuntu-x86-64-avx2/stockfish
+      - run: ln -s stockfish-ubuntu-x86-64-avx2/stockfish stockfish
+      - run: go get -v ./...
+      - run: go mod tidy
       - run: go build -v ./...
       - run: go test -v -bench=. ./...
