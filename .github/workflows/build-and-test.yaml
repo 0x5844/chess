@@ -11,7 +11,7 @@ jobs:
           go-version: 1.17
       - run: wget https://github.com/official-stockfish/Stockfish/releases/latest/download/stockfish-ubuntu-x86-64-avx2.tar
       - run: tar -xvf stockfish-ubuntu-x86-64-avx2.tar
-      - run: ln -s $PWD/stockfish-*/stockfish stockfish
-      - run: chmod u+x $PWD/stockfish-*/stockfish
+      - run: chmod +x stockfish-ubuntu-x86-64-avx2/stockfish
+      - run: ln -s stockfish-ubuntu-x86-64-avx2/stockfish stockfish
       - run: go build -v ./...
       - run: go test -v -bench=. ./...
