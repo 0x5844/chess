@@ -3,6 +3,7 @@ package opening
 
 import (
 	"bytes"
+	"fmt"
 
 	"github.com/0x5844/chess"
 )
@@ -12,6 +13,7 @@ type Opening struct {
 	code  string
 	title string
 	pgn   string
+	moves []*chess.Move
 	game  *chess.Game
 }
 
@@ -30,13 +32,27 @@ func (o *Opening) PGN() string {
 	return o.pgn
 }
 
-// Game returns the opening as a game.
-func (o *Opening) Game() *chess.Game {
+// Moves returns the sequence of chess moves defining the opening.
+func (o *Opening) Moves() []*chess.Move {
+	// Return a copy to prevent external modification
+	m := make([]*chess.Move, len(o.moves))
+	copy(m, o.moves)
+	return m
+}
+
+// Game returns the opening as a playable chess.Game instance.
+func (o *Opening) Game() (*chess.Game, error) {
 	if o.game == nil {
-		pgn, _ := chess.PGN(bytes.NewBufferString(o.pgn))
-		o.game = chess.NewGame(pgn)
+		// Use the stored PGN which should be valid SAN
+		pgnReader := bytes.NewBufferString(o.pgn)
+		pgn, err := chess.PGN(pgnReader)
+		if err != nil {
+			// This indicates an issue with the PGN data loaded initially
+			return nil, fmt.Errorf("failed to parse PGN for opening %q (%s): %w", o.title, o.code, err)
+		}
+		o.game = chess.NewGame(pgn) // Assumes chess.NewGame handles PGN correctly
 	}
-	return o.game
+	return o.game, nil
 }
 
 // Book is an opening book that returns openings for move sequences
