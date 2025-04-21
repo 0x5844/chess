@@ -1,25 +1,15 @@
 # chess
-![Archived](https://img.shields.io/badge/status-archived-lightgrey)
+
 [![Build and Test](https://github.com/0x5844/chess/actions/workflows/build-and-test.yaml/badge.svg)](https://github.com/0x5844/chess/actions/workflows/build-and-test.yaml)
 [![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/0x5844/chess)
-[![Coverage Status](https://coveralls.io/repos/notnil/chess/badge.svg?branch=master&service=github)](https://coveralls.io/github/notnil/chess?branch=master)
-[![Go Report Card](https://goreportcard.com/badge/notnil/chess)](https://goreportcard.com/report/notnil/chess)
-[![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/notnil/chess/master/LICENSE)
-
-## Archived
-
-This repository has been archived due to the inability to continue addressing bug fixes and feature requests. Fortunately, another maintainer has graciously stepped up to carry the baton and ensure that chess remains accessible via the Go programming language.
-
-We recommend that all users follow the new repository for ongoing development and updates:
-
-👉 https://github.com/corentings/chess
+[![Go Report Card](https://goreportcard.com/badge/0x5844/chess)](https://goreportcard.com/report/0x5844/chess)
+[![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/0x5844/chess/refs/heads/master/LICENSE)
 
 ## Introduction
 
-**chess** is a set of go packages which provide common chess utilities such as move generation, turn management, checkmate detection, PGN encoding, UCI interoperability, image generation, opening book exploration, and others.  It is well tested and optimized for performance.   
+**chess** is a set of go packages which provide common chess utilities such as move generation, turn management, checkmate detection, PGN encoding, UCI interoperability, image generation, opening book exploration, and others.  It is well tested and optimized for performance.
 
-![rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq - 0 1](example.png)    
-
+![rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq - 0 1](example.png)
 
 ## Repo Structure
 
@@ -36,94 +26,95 @@ We recommend that all users follow the new repository for ongoing development an
 
 ```bash
 go get -u github.com/0x5844/chess
-``` 
+```
 
 ## Usage
 
-### Example Random Game 
+### Example Random Game
 
 ```go
 package main
 
 import (
-	"fmt"
-	"math/rand"
+ "fmt"
+ "math/rand"
 
-	"github.com/0x5844/chess"
+ "github.com/0x5844/chess"
 )
 
 func main() {
-	game := chess.NewGame()
-	// generate moves until game is over
-	for game.Outcome() == chess.NoOutcome {
-		// select a random move
-		moves := game.ValidMoves()
-		move := moves[rand.Intn(len(moves))]
-		game.Move(move)
-	}
-	// print outcome and game PGN
-	fmt.Println(game.Position().Board().Draw())
-	fmt.Printf("Game completed. %s by %s.\n", game.Outcome(), game.Method())
-	fmt.Println(game.String())
-	/*
-		Output:
+ game := chess.NewGame()
+ // generate moves until game is over
+ for game.Outcome() == chess.NoOutcome {
+  // select a random move
+  moves := game.ValidMoves()
+  move := moves[rand.Intn(len(moves))]
+  game.Move(move)
+ }
+ // print outcome and game PGN
+ fmt.Println(game.Position().Board().Draw())
+ fmt.Printf("Game completed. %s by %s.\n", game.Outcome(), game.Method())
+ fmt.Println(game.String())
+ /*
+  Output:
 
-		 A B C D E F G H
-		8- - - - - - - -
-		7- - - - - - ♚ -
-		6- - - - ♗ - - -
-		5- - - - - - - -
-		4- - - - - - - -
-		3♔ - - - - - - -
-		2- - - - - - - -
-		1- - - - - - - -
+   A B C D E F G H
+  8- - - - - - - -
+  7- - - - - - ♚ -
+  6- - - - ♗ - - -
+  5- - - - - - - -
+  4- - - - - - - -
+  3♔ - - - - - - -
+  2- - - - - - - -
+  1- - - - - - - -
 
-		Game completed. 1/2-1/2 by InsufficientMaterial.
+  Game completed. 1/2-1/2 by InsufficientMaterial.
 
-		1.Nc3 b6 2.a4 e6 3.d4 Bb7 ...
-	*/
+  1.Nc3 b6 2.a4 e6 3.d4 Bb7 ...
+ */
 }
 ```
 
 ### Example Stockfish v. Stockfish
+
 ```go
 package main
 
 import (
-	"fmt"
-	"time"
+ "fmt"
+ "time"
 
-	"github.com/0x5844/chess"
-	"github.com/0x5844/chess/uci"
+ "github.com/0x5844/chess"
+ "github.com/0x5844/chess/uci"
 )
 
 func main() {
-	// set up engine to use stockfish exe
-	eng, err := uci.New("stockfish")
-	if err != nil {
-		panic(err)
-	}
-	defer eng.Close()
-	// initialize uci with new game
-	if err := eng.Run(uci.CmdUCI, uci.CmdIsReady, uci.CmdUCINewGame); err != nil {
-		panic(err)
-	}
-	// have stockfish play speed chess against itself (10 msec per move)
-	game := chess.NewGame()
-	for game.Outcome() == chess.NoOutcome {
-		cmdPos := uci.CmdPosition{Position: game.Position()}
-		cmdGo := uci.CmdGo{MoveTime: time.Second / 100}
-		if err := eng.Run(cmdPos, cmdGo); err != nil {
-			panic(err)
-		}
-		move := eng.SearchResults().BestMove
-		if err := game.Move(move); err != nil {
-			panic(err)
-		}
-	}
-	fmt.Println(game.String())
-	// Output: 
-	// 1.c4 c5 2.Nf3 e6 3.Nc3 Nc6 4.d4 cxd4 5.Nxd4 Nf6 6.a3 d5 7.cxd5 exd5 8.Bf4 Bc5 9.Ndb5 O-O 10.Nc7 d4 11.Na4 Be7 12.Nxa8 Bf5 13.g3 Qd5 14.f3 Rxa8 15.Bg2 Rd8 16.b4 Qe6 17.Nc5 Bxc5 18.bxc5 Nd5 19.O-O Nc3 20.Qd2 Nxe2+ 21.Kh1 d3 22.Bd6 Qd7 23.Rab1 h6 24.a4 Re8 25.g4 Bg6 26.a5 Ncd4 27.Qb4 Qe6 28.Qxb7 Nc2 29.Qxa7 Ne3 30.Rb8 Nxf1 31.Qb6 d2 32.Rxe8+ Qxe8 33.Qb3 Ne3 34.h3 Bc2 35.Qxc2 Nxc2 36.Kh2 d1=Q 37.h4 Qg1+ 38.Kh3 Ne1 39.h5 Qxg2+ 40.Kh4 Nxf3#  0-1
+ // set up engine to use stockfish exe
+ eng, err := uci.New("stockfish")
+ if err != nil {
+  panic(err)
+ }
+ defer eng.Close()
+ // initialize uci with new game
+ if err := eng.Run(uci.CmdUCI, uci.CmdIsReady, uci.CmdUCINewGame); err != nil {
+  panic(err)
+ }
+ // have stockfish play speed chess against itself (10 msec per move)
+ game := chess.NewGame()
+ for game.Outcome() == chess.NoOutcome {
+  cmdPos := uci.CmdPosition{Position: game.Position()}
+  cmdGo := uci.CmdGo{MoveTime: time.Second / 100}
+  if err := eng.Run(cmdPos, cmdGo); err != nil {
+   panic(err)
+  }
+  move := eng.SearchResults().BestMove
+  if err := game.Move(move); err != nil {
+   panic(err)
+  }
+ }
+ fmt.Println(game.String())
+ // Output: 
+ // 1.c4 c5 2.Nf3 e6 3.Nc3 Nc6 4.d4 cxd4 5.Nxd4 Nf6 6.a3 d5 7.cxd5 exd5 8.Bf4 Bc5 9.Ndb5 O-O 10.Nc7 d4 11.Na4 Be7 12.Nxa8 Bf5 13.g3 Qd5 14.f3 Rxa8 15.Bg2 Rd8 16.b4 Qe6 17.Nc5 Bxc5 18.bxc5 Nd5 19.O-O Nc3 20.Qd2 Nxe2+ 21.Kh1 d3 22.Bd6 Qd7 23.Rab1 h6 24.a4 Re8 25.g4 Bg6 26.a5 Ncd4 27.Qb4 Qe6 28.Qxb7 Nc2 29.Qxa7 Ne3 30.Rb8 Nxf1 31.Qb6 d2 32.Rxe8+ Qxe8 33.Qb3 Ne3 34.h3 Bc2 35.Qxc2 Nxc2 36.Kh2 d1=Q 37.h4 Qg1+ 38.Kh3 Ne1 39.h5 Qxg2+ 40.Kh4 Nxf3#  0-1
 }
 ```
 
@@ -149,7 +140,7 @@ Game's MoveStr method accepts string input using the default Algebraic Notation:
 ```go
 game := chess.NewGame()
 if err := game.MoveStr("e4"); err != nil {
-	// handle error
+ // handle error
 }
 ```
 
@@ -159,7 +150,7 @@ The outcome of the match is calculated automatically from the inputted moves if 
 
 #### Checkmate
 
-Black wins by checkmate (Fool's Mate):   
+Black wins by checkmate (Fool's Mate):
 
 ```go
 game := chess.NewGame()
@@ -180,7 +171,7 @@ fmt.Println(game.Method()) // Checkmate
 2♙ ♙ ♙ ♙ ♙ - - ♙
 1♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖
 */
-``` 
+```
 
 #### Stalemate
 
@@ -237,7 +228,7 @@ fmt.Println(game.Method())  // DrawOffer
 game := chess.NewGame()
 moves := []string{"Nf3", "Nf6", "Ng1", "Ng8", "Nf3", "Nf6", "Ng1", "Ng8"}
 for _, m := range moves {
-	game.MoveStr(m)
+ game.MoveStr(m)
 }
 fmt.Println(game.EligibleDraws()) //  [DrawOffer ThreefoldRepetition]
 ```
@@ -249,13 +240,13 @@ According to the [FIDE Laws of Chess](http://www.fide.com/component/handbook/?id
 ```go
 game := chess.NewGame()
 moves := []string{
-	"Nf3", "Nf6", "Ng1", "Ng8",
-	"Nf3", "Nf6", "Ng1", "Ng8",
-	"Nf3", "Nf6", "Ng1", "Ng8",
-	"Nf3", "Nf6", "Ng1", "Ng8",
+ "Nf3", "Nf6", "Ng1", "Ng8",
+ "Nf3", "Nf6", "Ng1", "Ng8",
+ "Nf3", "Nf6", "Ng1", "Ng8",
+ "Nf3", "Nf6", "Ng1", "Ng8",
 }
 for _, m := range moves {
-	game.MoveStr(m)
+ game.MoveStr(m)
 }
 fmt.Println(game.Outcome()) // 1/2-1/2
 fmt.Println(game.Method()) // FivefoldRepetition
@@ -328,7 +319,7 @@ PGN supplied as an optional parameter to the NewGame constructor:
 ```go
 pgn, err := chess.PGN(pgnReader)
 if err != nil {
-	// handle error
+ // handle error
 }
 game := chess.NewGame(pgn)
 ```
@@ -357,21 +348,21 @@ For parsing large PGN database files use Scanner:
 ```go
 f, err := os.Open("lichess_db_standard_rated_2013-01.pgn")
 if err != nil {
-	panic(err)
+ panic(err)
 }
 defer f.Close()
 
 scanner := chess.NewScanner(f)
 for scanner.Scan() {
-	game := scanner.Next()
-	fmt.Println(game.GetTagPair("Site"))
-	// Output &{Site https://lichess.org/8jb5kiqw}
+ game := scanner.Next()
+ fmt.Println(game.GetTagPair("Site"))
+ // Output &{Site https://lichess.org/8jb5kiqw}
 }
 ```
 
 ### FEN
 
-[FEN](https://en.wikipedia.org/wiki/Forsyth–Edwards_Notation), or Forsyth–Edwards Notation, is the standard notation for describing a board position.  FENs include piece positions, turn, castle rights, en passant square, half move counter (for [50 move rule](https://en.wikipedia.org/wiki/Fifty-move_rule)), and full move counter. 
+[FEN](https://en.wikipedia.org/wiki/Forsyth–Edwards_Notation), or Forsyth–Edwards Notation, is the standard notation for describing a board position.  FENs include piece positions, turn, castle rights, en passant square, half move counter (for [50 move rule](https://en.wikipedia.org/wiki/Fifty-move_rule)), and full move counter.
 
 #### Read FEN
 
@@ -380,7 +371,7 @@ FEN supplied as an optional parameter to the NewGame constructor:
 ```go
 fen, err := chess.FEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 if err != nil {
-	// handle error
+ // handle error
 }
 game := chess.NewGame(fen)
 ```
@@ -397,7 +388,8 @@ fmt.Println(pos.String()) // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq 
 
 ### Notations
 
-[Chess Notation](https://en.wikipedia.org/wiki/Chess_notation) define how moves are encoded in a serialized format.  Chess uses a notation when converting to and from PGN and for accepting move text.    
+[Chess Notation](https://en.wikipedia.org/wiki/Chess_notation) define how moves are encoded in a serialized format.  Chess uses a notation when converting to and from PGN and for accepting move text.
+
 #### Algebraic Notation
 
 [Algebraic Notation](https://en.wikipedia.org/wiki/Algebraic_notation_(chess)) (or Standard Algebraic Notation) is the official chess notation used by FIDE. Examples: e2, e5, O-O (short castling), e8=Q (promotion)
@@ -456,45 +448,45 @@ fmt.Println(game.Position().Board().Draw())
 ### Move History
 
 Move History is a convenient API for accessing aligned positions, moves, and comments.  Move
-History is useful when trying to understand detailed information about a game.  Below is an 
-example showing how to see which side castled first. 
+History is useful when trying to understand detailed information about a game.  Below is an
+example showing how to see which side castled first.
 
 ```go
 package main
 
 import (
-	"fmt"
-	"os"
+ "fmt"
+ "os"
 
-	"github.com/0x5844/chess"
+ "github.com/0x5844/chess"
 )
 
 func main() {
-	f, err := os.Open("fixtures/pgns/0001.pgn")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-	pgn, err := chess.PGN(f)
-	if err != nil {
-		panic(err)
-	}
-	game := chess.NewGame(pgn)
-	color := chess.NoColor
-	for _, mh := range game.MoveHistory() {
-		if mh.Move.HasTag(chess.KingSideCastle) || mh.Move.HasTag(chess.QueenSideCastle) {
-			color = mh.PrePosition.Turn()
-			break
-		}
-	}
-	switch color {
-	case chess.White:
-		fmt.Println("white castled first")
-	case chess.Black:
-		fmt.Println("black castled first")
-	default:
-		fmt.Println("no side castled")
-	}
+ f, err := os.Open("fixtures/pgns/0001.pgn")
+ if err != nil {
+  panic(err)
+ }
+ defer f.Close()
+ pgn, err := chess.PGN(f)
+ if err != nil {
+  panic(err)
+ }
+ game := chess.NewGame(pgn)
+ color := chess.NoColor
+ for _, mh := range game.MoveHistory() {
+  if mh.Move.HasTag(chess.KingSideCastle) || mh.Move.HasTag(chess.QueenSideCastle) {
+   color = mh.PrePosition.Turn()
+   break
+  }
+ }
+ switch color {
+ case chess.White:
+  fmt.Println("white castled first")
+ case chess.Black:
+  fmt.Println("black castled first")
+ default:
+  fmt.Println("no side castled")
+ }
 }
 ```
 
@@ -505,11 +497,13 @@ Chess has been performance tuned, using [pprof](https://golang.org/pkg/runtime/p
 ### Benchmarks  
 
 The benchmarks can be run with the following command:
+
 ```
 go test -bench=.
 ```
 
 Results from the baseline 2015 MBP:
+
 ```
 BenchmarkBitboardReverse-4              2000000000               1.01 ns/op
 BenchmarkStalemateStatus-4                500000              3116 ns/op
