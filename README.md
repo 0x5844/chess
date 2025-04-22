@@ -16,10 +16,10 @@
 
 | Package | Docs Link | Description |
 | ------------- | ------------- | ------------- |
-| **chess**  | [notnil/chess](README.md)  | Move generation, serialization / deserialization, turn management, checkmate detection  |
-| **image**  | [notnil/chess/image](image/README.md)  | SVG chess board image generation  |
-| **opening**  | [notnil/chess/opening](opening/README.md)  | Opening book interactivity  |
-| **uci**  | [notnil/chess/uci](uci/README.md)  | Universal Chess Interface client  |
+| **chess**  | [0x5844/chess](README.md)  | Move generation, serialization / deserialization, turn management, checkmate detection  |
+| **image**  | [0x5844/chess/image](image/README.md)  | SVG chess board image generation  |
+| **opening**  | [0x5844/chess/opening](opening/README.md)  | Opening book interactivity  |
+| **uci**  | [0x5844/chess/uci](uci/README.md)  | Universal Chess Interface client  |
 
 ## Installation
 
